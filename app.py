@@ -156,27 +156,27 @@ with tab2:
             grouped_by_doctor['count_date'] = grouped_by_doctor['date'].apply(len)
             st.dataframe(grouped_by_doctor)
 
-# Show grouped by date table at the bottom for manual validation
-data_df = load_data()
-if not data_df.empty and 'doctor' in data_df.columns and 'date' in data_df.columns:
-    st.subheader("Result Grouped by Date (Manual Validation)")
-    grouped = data_df.groupby('date')['doctor'].apply(list).reset_index()
-    st.dataframe(grouped)
+        # Show grouped by date table at the bottom for manual validation
+        data_df = load_data()
+        if not data_df.empty and 'doctor' in data_df.columns and 'date' in data_df.columns:
+            st.subheader("Result Grouped by Date (Manual Validation)")
+            grouped = data_df.groupby('date')['doctor'].apply(list).reset_index()
+            st.dataframe(grouped)
 
 
-st.subheader("Result Grouped by Doctor Name")
-data_df['date'] = pd.to_datetime(data_df['date'], errors='coerce')
-recheck = (
-    data_df
-    .dropna(subset=['doctor', 'date'])
-    .assign(day=lambda df: df['date'].dt.day)
-    .sort_values(['doctor', 'date'])
-)
+        st.subheader("Result Grouped by Doctor Name")
+        data_df['date'] = pd.to_datetime(data_df['date'], errors='coerce')
+        recheck = (
+            data_df
+            .dropna(subset=['doctor', 'date'])
+            .assign(day=lambda df: df['date'].dt.day)
+            .sort_values(['doctor', 'date'])
+        )
 
-grouped = (
-    recheck
-    .groupby('doctor', as_index=False)['day']
-    .apply(list)
-)
+        grouped = (
+            recheck
+            .groupby('doctor', as_index=False)['day']
+            .apply(list)
+        )
 
-st.dataframe(grouped)
+        st.dataframe(grouped)
